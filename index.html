@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>抽選ガチャにゃ🎯</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fff8f8;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      margin: 5px;
+      padding: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    #log {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 200px;
+      overflow-y: scroll;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>ちゃこの抽選ガチャ🎁</h1>
+
+  <div>
+    当たり確率: <input type="text" id="fraction" value="1/319"><br>
+    当たり残数: <input type="number" id="hits" value="1000"><br>
+    総口数: <input type="number" id="total" value="319000"><br>
+  </div>
+
+  <div>
+    <button onclick="draw(1)">1回</button>
+    <button onclick="draw(10)">10回</button>
+    <button onclick="draw(100)">100回</button>
+    <button onclick="reset()">リセット</button>
+  </div>
+
+  <h3 id="status">当たり状況：0 / 0（0.00%）</h3>
+
+  <div id="log"></div>
+
+  <script>
+    let originalHits = 1000;
+    let originalTotal = 319000;
+    let totalUsed = 0;
+    let totalHits = 0;
+
+    async function draw(times) {
+      const [num, denom] = document.getElementById("fraction").value.split("/").map(Number);
+      let hits = Number(document.getElementById("hits").value);
+      let total = Number(document.getElementById("total").value);
+
+      const response = await fetch("https://lottery-lymd.onrender.com/draw", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          numerator: num,
+          denominator: denom,
+          times: times,
+          hits_left: hits,
+          total_left: total
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.error) {
+        alert(result.error);
+        return;
+      }
+
+      document.getElementById("hits").value = result.hits_left;
+      document.getElementById("total").value = result.total_left;
+
+      totalUsed += (total - result.total_left);
+      totalHits = originalHits - result.hits_left;
+
+      const percent = totalUsed > 0 ? (totalHits / totalUsed) * 100 : 0;
+      document.getElementById("status").innerText = `当たり状況：${totalHits} / ${totalUsed}（${percent.toFixed(2)}%）`;
+
+      const log = document.getElementById("log");
+      log.textContent += result.result + "\n";
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function reset() {
+      document.getElementById("fraction").value = "1/319";
+      document.getElementById("hits").value = 1000;
+      document.getElementById("total").value = 319000;
+      document.getElementById("log").textContent = "";
+      document.getElementById("status").innerText = "当たり状況：0 / 0（0.00%）";
+      originalHits = 1000;
+      originalTotal = 319000;
+      totalUsed = 0;
+      totalHits = 0;
+    }
+  </script>
+</body>
+</html>
