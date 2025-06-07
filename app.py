@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # ← 追加
 import random
 
 app = Flask(__name__)
+CORS(app)  # ← 全部のオリジンを許可するにゃ！
 
 @app.route("/")
 def index():
