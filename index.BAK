@@ -93,7 +93,7 @@
       const log = document.getElementById("log");
       log.textContent += result.result + "\n";
       log.scrollTop = log.scrollHeight;
-    }a
+    }
 
     function reset() {
       document.getElementById("fraction").value = "1/319";
@@ -108,4 +108,4 @@
     }
   </script>
 </body>
-</html>
+<//html>
