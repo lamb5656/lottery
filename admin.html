@@ -9,13 +9,12 @@
 <body>
   <header class="container">
     <h1>くじ 管理画面</h1>
-    <p class="sub">使用状況の監視・CSVのダウンロード・コード無効化ができます。</p>
+    <p class="sub">Cloudflare Access で保護された管理APIに自動接続します。トークンの入力は不要です。</p>
   </header>
 
   <main class="container card">
     <section class="pad">
-      <div class="row"><span>管理トークン</span><input id="admin-token" type="password" placeholder="ADMIN_TOKEN" /></div>
-      <div class="row"><span>Lottery ID</span><input id="lottery-id" type="text" placeholder="作成時のID (例: abcdef123456)" /></div>
+      <div class="row"><span>Lottery ID</span><input id="lottery-id" type="text" placeholder="例: abcdef123456" /></div>
       <div class="row"><button id="load" class="primary">読み込み</button></div>
     </section>
 
@@ -23,8 +22,8 @@
       <h2>状況</h2>
       <div id="stats-box" class="share"></div>
       <div class="row">
-        <button id="csv-public" class="ghost">公開CSV（リンクのみ）</button>
-        <button id="csv-private" class="ghost">管理CSV（リンク＋ランク）</button>
+        <button id="csv-public" class="primary" style="background:#fff;color:#111;border-color:#ddd">公開CSV（リンクのみ）</button>
+        <button id="csv-private" class="primary" style="background:#fff;color:#111;border-color:#ddd">管理CSV（リンク＋ランク）</button>
       </div>
     </section>
 
@@ -40,10 +39,7 @@
     </section>
   </main>
 
-  <footer class="container foot">
-    <small>© 2025 Secure Lottery — Worker + Pages</small>
-  </footer>
-
+  <footer class="container foot"><small>© 2025 Secure Lottery</small></footer>
   <script src="./js/config.js"></script>
   <script src="./js/admin.js"></script>
 </body>

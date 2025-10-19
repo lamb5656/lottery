@@ -3,40 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>くじ作成（サーバー連携）</title>
+  <title>くじ作成（自動設定）</title>
   <link rel="stylesheet" href="./assets/style.css" />
 </head>
 <body>
   <header class="container">
-    <h1>くじ作成（Cloudflare Workers 連携）</h1>
-    <p class="sub">総数・当たり口数を設定して、配布用リンク（1回限り）を生成します。</p>
+    <h1>くじ作成</h1>
+    <p class="sub">総数・当たり口数を設定して、配布用リンク（1回限り）を生成します。管理トークンや公開URLの入力は不要です。</p>
   </header>
 
   <main class="container card">
-    <section class="pad">
-      <div class="row">
-        <span>管理トークン</span>
-        <input id="admin-token" type="password" placeholder="環境変数 ADMIN_TOKEN と一致する文字列" />
-      </div>
-      <div class="row">
-        <span>公開ベースURL</span>
-        <input id="public-base" type="text" placeholder="https://ユーザー名.github.io/リポジトリ名/pages" />
-      </div>
-    </section>
-
     <section>
-      <label class="row"><span>タイトル</span><input id="title" type="text" value="社内抽選 2025秋" /></label>
+      <label class="row"><span>タイトル</span><input id="title" type="text" value="イベント抽選" /></label>
       <label class="row"><span>総数</span><input id="total" type="number" min="1" step="1" value="100" /></label>
 
       <div class="row">
         <span>当たりランク</span>
-        <div class="grid">
+        <div class="grid" id="ranks">
           <div class="row"><input class="rank-name" type="text" value="1等" /><input class="rank-count" type="number" min="0" step="1" value="1" /></div>
           <div class="row"><input class="rank-name" type="text" value="2等" /><input class="rank-count" type="number" min="0" step="1" value="2" /></div>
           <div class="row"><input class="rank-name" type="text" value="3等" /><input class="rank-count" type="number" min="0" step="1" value="3" /></div>
-          <div id="more-ranks"></div>
         </div>
-        <div class="right"><button id="add-rank" class="ghost">＋ 行を追加</button></div>
+        <div class="right"><button id="add-rank" class="primary" style="background:#fff;color:#111;border-color:#ddd">＋ 行を追加</button></div>
       </div>
 
       <div class="row"><button id="create" class="primary">抽選を作成</button></div>
@@ -47,14 +35,11 @@
     <section id="output" class="hidden">
       <h2>作成結果</h2>
       <div class="share" id="created"></div>
-      <p class="sub">CSVは <a href="./admin.html">管理画面</a> からもダウンロードできます。</p>
+      <p class="sub">管理画面は自動でIDを引き継ぎます（ブックマーク推奨）。</p>
     </section>
   </main>
 
-  <footer class="container foot">
-    <small>© 2025 Secure Lottery — Worker + Pages</small>
-  </footer>
-
+  <footer class="container foot"><small>© 2025 Secure Lottery</small></footer>
   <script src="./js/config.js"></script>
   <script src="./js/create.js"></script>
 </body>

@@ -1,13 +1,9 @@
 (function(){
   const $ = s => document.querySelector(s);
   let turnstileToken = "";
+  window.onTurnstile = t => { turnstileToken = t; };
 
-  window.onTurnstile = function(token){ turnstileToken = token; };
-
-  function getCode(){
-    const p = new URLSearchParams(location.search);
-    return p.get('code') || '';
-  }
+  function getCode(){ return (new URLSearchParams(location.search)).get('code') || ''; }
 
   async function redeem(){
     $('#msg').textContent = '';
@@ -17,8 +13,7 @@
 
     const el = document.getElementById('cf-turnstile');
     if(APP_CONFIG.TURNSTILE_SITE_KEY && !el.dataset.set){
-      el.dataset.set = "1";
-      el.setAttribute('data-sitekey', APP_CONFIG.TURNSTILE_SITE_KEY);
+      el.dataset.set = "1"; el.setAttribute('data-sitekey', APP_CONFIG.TURNSTILE_SITE_KEY);
     }
 
     const resp = await fetch(APP_CONFIG.BACKEND_BASE + "/redeem", {
@@ -27,18 +22,13 @@
       body: JSON.stringify({ code, name, turnstileToken })
     });
     const data = await resp.json();
-    if(!resp.ok){
-      $('#msg').textContent = data.error || ('Error '+resp.status);
-      return;
-    }
+    if(!resp.ok){ $('#msg').textContent = data.error || ('Error '+resp.status); return; }
     $('#form-sec').classList.add('hidden');
     $('#result-sec').classList.remove('hidden');
     const box = $('#result-box');
     box.textContent = data.rank;
-    if(data.rank !== 'ハズレ'){ box.classList.add('win'); } else { box.classList.add('lose'); }
+    if(data.rank !== 'ハズレ') box.classList.add('win'); else box.classList.add('lose');
   }
 
-  document.addEventListener('DOMContentLoaded', ()=>{
-    $('#draw').addEventListener('click', redeem);
-  });
+  document.addEventListener('DOMContentLoaded', ()=> $('#draw').addEventListener('click', redeem));
 })();
