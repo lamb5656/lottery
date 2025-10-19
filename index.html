@@ -1,167 +1,61 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>くじシミュレーター</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    label {
-      font-weight: bold;
-      margin: 10px 0 5px;
-      display: block;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 16px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 12px 20px;
-      font-size: 18px;
-      background: #222;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .result {
-      white-space: pre-wrap;
-      background: #fff;
-      padding: 15px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      word-break: break-word;
-    }
-
-    details {
-      margin-top: 15px;
-      background: #eee;
-      padding: 10px;
-      border-radius: 6px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>くじ作成（サーバー連携）</title>
+  <link rel="stylesheet" href="./assets/style.css" />
 </head>
 <body>
-  <h1>くじシミュレーター</h1>
+  <header class="container">
+    <h1>くじ作成（Cloudflare Workers 連携）</h1>
+    <p class="sub">総数・当たり口数を設定して、配布用リンク（1回限り）を生成します。</p>
+  </header>
 
-  <label>くじ総数:</label>
-  <input type="number" id="totalTickets" value="31900">
+  <main class="container card">
+    <section class="pad">
+      <div class="row">
+        <span>管理トークン</span>
+        <input id="admin-token" type="password" placeholder="環境変数 ADMIN_TOKEN と一致する文字列" />
+      </div>
+      <div class="row">
+        <span>公開ベースURL</span>
+        <input id="public-base" type="text" placeholder="https://ユーザー名.github.io/リポジトリ名/pages" />
+      </div>
+    </section>
 
-  <label>当たり確率（1/n）:</label>
-  <input type="number" id="odds" value="319">
+    <section>
+      <label class="row"><span>タイトル</span><input id="title" type="text" value="社内抽選 2025秋" /></label>
+      <label class="row"><span>総数</span><input id="total" type="number" min="1" step="1" value="100" /></label>
 
-  <label>当たり数:</label>
-  <input type="number" id="maxWins" value="100">
+      <div class="row">
+        <span>当たりランク</span>
+        <div class="grid">
+          <div class="row"><input class="rank-name" type="text" value="1等" /><input class="rank-count" type="number" min="0" step="1" value="1" /></div>
+          <div class="row"><input class="rank-name" type="text" value="2等" /><input class="rank-count" type="number" min="0" step="1" value="2" /></div>
+          <div class="row"><input class="rank-name" type="text" value="3等" /><input class="rank-count" type="number" min="0" step="1" value="3" /></div>
+          <div id="more-ranks"></div>
+        </div>
+        <div class="right"><button id="add-rank" class="ghost">＋ 行を追加</button></div>
+      </div>
 
-  <button onclick="simulateLottery()">開始する！</button>
-  <div class="result" id="resultArea"></div>
+      <div class="row"><button id="create" class="primary">抽選を作成</button></div>
+    </section>
 
-  <script>
-    function getSecureRandomInt(max) {
-      const array = new Uint32Array(1);
-      window.crypto.getRandomValues(array);
-      return array[0] % max;
-    }
+    <hr/>
 
-    function simulateLottery() {
-      const TOTAL_TICKETS = parseInt(document.getElementById("totalTickets").value);
-      const ODDS = parseInt(document.getElementById("odds").value);
-      const MAX_WINS = parseInt(document.getElementById("maxWins").value);
+    <section id="output" class="hidden">
+      <h2>作成結果</h2>
+      <div class="share" id="created"></div>
+      <p class="sub">CSVは <a href="./admin.html">管理画面</a> からもダウンロードできます。</p>
+    </section>
+  </main>
 
-      let winRemaining = MAX_WINS;
-      let winIndexesSet = new Set();
-      let forceStartIndex = null;
+  <footer class="container foot">
+    <small>© 2025 Secure Lottery — Worker + Pages</small>
+  </footer>
 
-      for (let i = 0; i < TOTAL_TICKETS; i++) {
-        const currentTicket = i + 1;
-        const ticketsLeft = TOTAL_TICKETS - i;
-
-        if (winRemaining >= 1 && winRemaining === ticketsLeft) {
-          if (forceStartIndex === null) {
-            forceStartIndex = currentTicket;
-          }
-          winIndexesSet.add(currentTicket);
-          winRemaining--;
-          continue;
-        }
-
-        if (getSecureRandomInt(ODDS) === 0 && winRemaining > 0) {
-          winIndexesSet.add(currentTicket);
-          winRemaining--;
-        }
-      }
-
-      let winIndexes = Array.from(winIndexesSet).sort((a, b) => a - b);
-      let intervals = [];
-
-      if (winIndexes.length > 0) {
-        const firstInterval = winIndexes[0] - 1;
-        if (firstInterval > 0) intervals.push(firstInterval);
-      }
-
-      for (let i = 1; i < winIndexes.length; i++) {
-        const diff = winIndexes[i] - winIndexes[i - 1];
-        if (diff > 0) intervals.push(diff);
-      }
-
-      if (winIndexes.length > 0) {
-        const lastInterval = TOTAL_TICKETS - winIndexes[winIndexes.length - 1];
-        if (lastInterval > 0) intervals.push(lastInterval);
-      }
-
-      const minInterval = intervals.length > 0 ? Math.min(...intervals) : null;
-      const maxInterval = intervals.length > 0 ? Math.max(...intervals) : null;
-
-      let forcedWinCount = 0;
-      if (forceStartIndex !== null) {
-        forcedWinCount = winIndexes.filter(n => n >= forceStartIndex).length;
-      }
-
-      let resultText = `💡 当たりの総数: ${winIndexes.length} / ${MAX_WINS}\n`;
-      resultText += winIndexes.length > 0 ? `🎯 最初の当たり: ${winIndexes[0]} 口目\n` : "💥 当たりなし\n";
-
-      if (intervals.length > 0) {
-        resultText += `⏱️ 最短の当たり間隔（開始前・終了後も含む）: ${minInterval} 口\n`;
-        resultText += `🐢 最長の当たり間隔（開始前・終了後も含む）: ${maxInterval} 口\n`;
-      } else {
-        resultText += "⚠️ 間隔の計算不可（当たり1件以下）\n";
-      }
-
-      if (forceStartIndex !== null) {
-        resultText += `🚨 強制排出スタート: ${forceStartIndex} 口目\n`;
-        resultText += `🧮 強制排出で出た当たり: ${forcedWinCount} 口\n`;
-      } else {
-        resultText += `✅ 強制排出は発動しなかった\n`;
-      }
-
-      let detailsHTML = '';
-      if (winIndexes.length > 0) {
-        const indexList = winIndexes.map((n, i) => `${i + 1}回目：${n}口目`).join('\n');
-        detailsHTML = `
-<details>
-  <summary>📋 当たった場所一覧を表示する（${winIndexes.length} 件）</summary>
-  <pre>${indexList}</pre>
-</details>`;
-      }
-
-      document.getElementById("resultArea").innerHTML = resultText + detailsHTML;
-    }
-  </script>
+  <script src="./js/config.js"></script>
+  <script src="./js/create.js"></script>
 </body>
 </html>

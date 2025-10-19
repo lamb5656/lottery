@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>管理画面</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>くじ 管理画面</h1>
+    <p class="sub">使用状況の監視・CSVのダウンロード・コード無効化ができます。</p>
+  </header>
+
+  <main class="container card">
+    <section class="pad">
+      <div class="row"><span>管理トークン</span><input id="admin-token" type="password" placeholder="ADMIN_TOKEN" /></div>
+      <div class="row"><span>Lottery ID</span><input id="lottery-id" type="text" placeholder="作成時のID (例: abcdef123456)" /></div>
+      <div class="row"><button id="load" class="primary">読み込み</button></div>
+    </section>
+
+    <section id="stats-sec" class="hidden">
+      <h2>状況</h2>
+      <div id="stats-box" class="share"></div>
+      <div class="row">
+        <button id="csv-public" class="ghost">公開CSV（リンクのみ）</button>
+        <button id="csv-private" class="ghost">管理CSV（リンク＋ランク）</button>
+      </div>
+    </section>
+
+    <section id="results-sec" class="hidden">
+      <h2>結果一覧（使用済み）</h2>
+      <div id="results"></div>
+    </section>
+
+    <section id="ops-sec" class="hidden">
+      <h2>コード無効化</h2>
+      <div class="row"><span>対象コード</span><input id="code" type="text" placeholder="abcdef123456_xxxxxxxxx" /></div>
+      <div class="row"><button id="invalidate" class="primary">無効化する</button></div>
+    </section>
+  </main>
+
+  <footer class="container foot">
+    <small>© 2025 Secure Lottery — Worker + Pages</small>
+  </footer>
+
+  <script src="./js/config.js"></script>
+  <script src="./js/admin.js"></script>
+</body>
+</html>

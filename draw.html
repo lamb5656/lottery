@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>くじを引く（1回限り）</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+  <header class="container">
+    <h1>くじを引く</h1>
+    <p class="sub">このリンクは1回限り有効です。不正な再利用はできません。</p>
+  </header>
+
+  <main class="container card">
+    <section id="form-sec">
+      <label class="row"><span>名前（任意）</span><input id="name" type="text" placeholder="例: 山田太郎" /></label>
+      <div class="row">
+        <div id="cf-turnstile" class="cf-turnstile" data-sitekey="" data-callback="onTurnstile"></div>
+      </div>
+      <div class="row"><button id="draw" class="primary">引く</button></div>
+      <div class="messages" id="msg"></div>
+    </section>
+
+    <section id="result-sec" class="hidden">
+      <h2>結果</h2>
+      <div id="result-box" class="result-box"></div>
+    </section>
+  </main>
+
+  <footer class="container foot">
+    <small>© 2025 Secure Lottery — Worker + Pages</small>
+  </footer>
+
+  <script src="./js/config.js"></script>
+  <script src="./js/draw.js"></script>
+</body>
+</html>
