@@ -1,14 +1,16 @@
 (function(){
   const $ = s => document.querySelector(s);
   const id = new URLSearchParams(location.search).get('id') || "";
+  if(!id){ alert('URLに ?id= が必要です'); }
 
   async function load(){
-    const sum = await (await fetch(APP_CONFIG.BACKEND_BASE + `/lotteries/${id}/summary`)).json();
+    const sres = await fetch(APP_CONFIG.BACKEND_BASE + `/lotteries/${id}/summary`);
+    const sum = await sres.json();
     $('#sum').innerHTML = `<b>${sum.title}</b> / 総数: ${sum.total} / 使用済み: ${sum.used} / 残り: ${sum.remaining}`;
 
-    const av = await (await fetch(APP_CONFIG.BACKEND_BASE + `/lotteries/${id}/available?offset=0&limit=200`)).json();
-    const grid = document.createElement('div');
-    grid.className = 'grid cols-10';
+    const ares = await fetch(APP_CONFIG.BACKEND_BASE + `/lotteries/${id}/available?offset=0&limit=200`);
+    const av = await ares.json();
+    const grid = document.createElement('div'); grid.className = 'grid cols-10';
     av.available.forEach(no => {
       const d = document.createElement('div');
       d.className = 'cell';
@@ -29,13 +31,14 @@
     });
     const data = await res.json();
     if(!res.ok){ alert(data.error || ('Error '+res.status)); return; }
-    $('#result-sec').classList.remove('hidden');
+    $('#result-sec').style.display = 'block';
     $('#result').textContent = `あなたの番号: ${data.no} / 結果: ${data.rank}`;
-    await load(); // refresh board/summary
+    await load();
   }
 
-  document.addEventListener('DOMContentLoaded', ()=>{
+  function init(){
     load();
-    $('#claim').addEventListener('click', claim);
-  });
+    const btn = document.querySelector('#claim'); if (btn) btn.addEventListener('click', claim);
+  }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

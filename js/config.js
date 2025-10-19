@@ -1,5 +1,1 @@
-// Set your Worker URL here
-window.APP_CONFIG = {
-  BACKEND_BASE: "https://lottery-secure.lamb565.workers.dev",
-  ACCESS_MODE: "access" // "access" (prod, Access保護) or "token" (dev)
-};
+window.APP_CONFIG = { BACKEND_BASE: "https://lottery-number-pick-bundled.lamb565.workers.dev" };

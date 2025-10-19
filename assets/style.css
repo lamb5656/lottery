@@ -7,15 +7,11 @@ h2{font-size:22px;margin:12px 0 8px}
 .sub{color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px;margin:12px}
 .row{display:flex;gap:12px;align-items:center;margin:10px 0}
-input,select,button{padding:10px;border:1px solid var(--line);border-radius:10px;font-size:16px}
+input,button{padding:10px;border:1px solid var(--line);border-radius:10px;font-size:16px}
 button.primary{background:var(--brand);border-color:var(--brand);color:#fff;cursor:pointer}
 button.primary:hover{background:var(--brand-2)}
 .grid{display:grid;gap:8px}
-.grid.cols-5{grid-template-columns:repeat(5,1fr)}
 .grid.cols-10{grid-template-columns:repeat(10,1fr)}
-.cell{border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;background:#fff}
-.cell.used{background:#f3f4f6;color:#6b7280;cursor:not-allowed}
-.cell.pick{outline:3px solid var(--brand)}
+.cell{border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;background:#fff;cursor:pointer}
 .share{padding:10px;background:#f9fafb;border:1px solid var(--line);border-radius:10px}
 .small{font-size:13px;color:#6b7280}
-table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:8px;font-size:14px;text-align:left}th{background:#f3f4f6}
