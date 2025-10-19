@@ -22,3 +22,19 @@ button.primary:hover{background:var(--brand-2)}
   h1{font-size:22px}
   h2{font-size:18px}
 }
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Noto Sans JP',sans-serif}
+:root{--bg:#f6f7fb;--card:#fff;--line:#e5e7eb;--text:#111;--brand:#2563eb;--brand2:#1d4ed8}
+body{background:var(--bg);color:var(--text)}
+.container{max-width:720px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px;margin:12px}
+.row{display:flex;gap:12px;align-items:center;margin:10px 0}
+.row>span{min-width:5em}
+input,button{padding:12px;border:1px solid var(--line);border-radius:12px;font-size:16px}
+button.primary{background:var(--brand);border-color:var(--brand);color:#fff;cursor:pointer}
+button.primary:hover{background:var(--brand2)}
+.share{padding:10px;background:#f9fafb;border:1px solid var(--line);border-radius:10px}
+@media (max-width:640px){
+  .row{flex-direction:column;align-items:stretch}
+  .row>span{min-width:0}
+  input,button{width:100%}
+}
