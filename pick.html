@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>番号を選んでくじを引く</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>番号を選んでくじを引く</h1>
+    <p class="sub">1人1つだけ選べます。誰かが選んだ番号は選べません。</p>
+  </header>
+
+  <main class="container card">
+    <section class="share">
+      <div id="sum"></div>
+    </section>
+
+    <section>
+      <div class="row">
+        <span>あなたの名前（任意）</span><input id="name" type="text" placeholder="例: 山田太郎" />
+      </div>
+      <div class="row">
+        <span>番号</span><input id="number" type="number" min="1" step="1" placeholder="例: 42" />
+        <button id="claim" class="primary">この番号で引く</button>
+      </div>
+      <p class="small">※ 使用済みは選べません。先着順です。</p>
+    </section>
+
+    <section>
+      <h2>空いている番号（先頭200件）</h2>
+      <div id="grid"></div>
+    </section>
+
+    <section id="result-sec" class="hidden">
+      <h2>結果</h2>
+      <div id="result" class="share"></div>
+    </section>
+  </main>
+
+  <script src="./js/config.js"></script>
+  <script src="./js/pick.js"></script>
+</body>
+</html>

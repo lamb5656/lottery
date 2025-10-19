@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>管理画面（割り振り・結果）</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>管理画面（割り振り・結果）</h1>
+    <p class="sub">当たり番号の割り振り・状況確認・CSVダウンロードを行います。</p>
+  </header>
+
+  <main class="container card">
+    <section class="share">
+      <div id="summary"></div>
+    </section>
+
+    <section>
+      <h2>当たりの割り振り</h2>
+      <div class="row">
+        <span>番号（例: 1,2,5-10）</span><input id="numbers" type="text" placeholder="1,2,5-10" />
+      </div>
+      <div class="row">
+        <span>ランク</span>
+        <select id="rank">
+          <option>1等</option><option>2等</option><option>3等</option><option>特賞</option><option>ハズレ</option>
+        </select>
+      </div>
+      <div class="row"><button id="assign" class="primary">割り振る</button></div>
+      <p class="small">※ 使用済みになった番号は上書きできません。</p>
+    </section>
+
+    <section>
+      <h2>ボード（状態）</h2>
+      <div id="board"></div>
+    </section>
+
+    <section>
+      <h2>結果一覧（使用済み）</h2>
+      <div id="results"></div>
+    </section>
+
+    <section class="row">
+      <button id="csv-public" class="primary" style="background:#fff;color:#111;border-color:#ddd">公開CSV</button>
+      <button id="csv-private" class="primary" style="background:#fff;color:#111;border-color:#ddd">管理CSV</button>
+    </section>
+  </main>
+
+  <script src="./js/config.js"></script>
+  <script src="./js/manage.js"></script>
+</body>
+</html>

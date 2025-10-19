@@ -1,24 +1,21 @@
 *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN','Yu Gothic UI',sans-serif}
 :root{--bg:#f6f7fb;--card:#ffffff;--line:#e5e7eb;--text:#111827;--muted:#6b7280;--brand:#2563eb;--brand-2:#1d4ed8;--win:#16a34a;--lose:#374151}
 body{background:var(--bg);color:var(--text)}
-.container{max-width:960px;margin:0 auto;padding:16px}
+.container{max-width:980px;margin:0 auto;padding:16px}
 h1{font-size:28px;margin:8px 0 4px}
 h2{font-size:22px;margin:12px 0 8px}
 .sub{color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px;margin:12px}
 .row{display:flex;gap:12px;align-items:center;margin:10px 0}
-input[type="text"],button{flex:1;padding:10px;border:1px solid var(--line);border-radius:10px;font-size:16px}
-button{background:#fff;cursor:pointer}
-button.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+input,select,button{padding:10px;border:1px solid var(--line);border-radius:10px;font-size:16px}
+button.primary{background:var(--brand);border-color:var(--brand);color:#fff;cursor:pointer}
 button.primary:hover{background:var(--brand-2)}
-.right{margin-left:auto}
-.hidden{display:none}
-.messages{color:#b91c1c;margin-bottom:8px}
-.share{padding:10px;background:#f9fafb;border:1px solid var(--line);border-radius:10px;word-break:break-all}
-.result-box{font-size:32px;border:2px dashed var(--line);border-radius:12px;padding:16px;text-align:center}
-.result-box.win{border-color:#86efac;background:#ecfdf5;color:var(--win);font-weight:700}
-.result-box.lose{border-color:#cbd5e1;background:#f8fafc;color:var(--lose)}
-.pad{padding:8px;border:1px dashed var(--line);border-radius:10px}
 .grid{display:grid;gap:8px}
+.grid.cols-5{grid-template-columns:repeat(5,1fr)}
+.grid.cols-10{grid-template-columns:repeat(10,1fr)}
+.cell{border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;background:#fff}
+.cell.used{background:#f3f4f6;color:#6b7280;cursor:not-allowed}
+.cell.pick{outline:3px solid var(--brand)}
+.share{padding:10px;background:#f9fafb;border:1px solid var(--line);border-radius:10px}
+.small{font-size:13px;color:#6b7280}
 table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:8px;font-size:14px;text-align:left}th{background:#f3f4f6}
-.foot{color:var(--muted)}

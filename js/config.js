@@ -1,5 +1,5 @@
-// Pages-side config — no secrets here
+// Set your Worker URL here
 window.APP_CONFIG = {
   BACKEND_BASE: "https://lottery-secure.lamb565.workers.dev",
-  TURNSTILE_SITE_KEY: ""
+  ACCESS_MODE: "access" // "access" (prod, Access保護) or "token" (dev)
 };
