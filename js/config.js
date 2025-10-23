@@ -1,4 +1,0 @@
-// WorkerのURLを必ず設定にゃ（例）
-window.APP_CONFIG = {
-  BACKEND_BASE: "https://lottery-number-pick-bundled.lamb565.workers.dev"
-};
